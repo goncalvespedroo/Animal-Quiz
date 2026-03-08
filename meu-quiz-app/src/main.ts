@@ -1,3 +1,5 @@
+import './style.css';
+
 let currentIndexQuestion = 0;
 let score = 0;
 let questionList: QuizQuestions[] = []; 
@@ -28,9 +30,9 @@ function renderizarQuiz() {
   if (!appElement_) return;
 
   if (currentIndexQuestion >= questionList.length) {
-    const elementoApp = document.querySelector('#app');
-    if (elementoApp) {
-      elementoApp.innerHTML = `
+    const appElement_ = document.querySelector('#app');
+    if (appElement_) {
+      appElement_.innerHTML = `
         <div class="text-center p-10 bg-slate-800 rounded-xl">
           <h1 class="text-3xl font-bold text-white">Quiz Ended! 🏆</h1>
           <p class="text-xl text-slate-300 mt-4">Your Final Score: ${score}</p>
@@ -47,10 +49,11 @@ function renderizarQuiz() {
       <div class="quiz-container">
         <p>Score: ${score} | Question: ${currentIndexQuestion + 1}/10</p>
         <h2 id="question">${userCurrentAnswer.question}</h2>
-        <div class="options">
-          <button class="btn-choice" value='True'>True</button>
-          <button class="btn-choice" value='False'>False</button>
-          <button class="btn-next">Next</button
+        <div class="options flex flex-col gap-4 mt-6">
+          <button class="btn-choice bg-slate-100 p-3 rounded" value='True'>True</button>
+          <button class="btn-choice bg-slate-100 p-3 rounded" value='False'>False</button>
+          <button class="btn-next hidden bg-blue-600 text-white p-3 rounded mt-4">Next</button
+          <button calss="bg-red-500 p-10">TESTE</button>
         </div>
       </div>
       `;

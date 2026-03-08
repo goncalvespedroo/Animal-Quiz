@@ -1,6 +1,6 @@
-let indicePerguntaAtual = 0;
-let pontuacao = 0;
-let listaDePerguntas: QuizQuestions[] = []; 
+let currentIndexQuestion = 0;
+let score = 0;
+let questionList: QuizQuestions[] = []; 
 
 interface QuizQuestions {
   category: string;
@@ -19,56 +19,67 @@ async function fetchQuestions(){
   const response = await fetch(url);
   const data: ApiResponse =  await response.json();
 
-  listaDePerguntas = data.results;
+  questionList = data.results;
   renderizarQuiz()
 }
 
 function renderizarQuiz() {
-  const elementoApp = document.querySelector<HTMLDivElement>('#app');
-  if (!elementoApp) return;
+  const appElement_ = document.querySelector<HTMLDivElement>('#app');
+  if (!appElement_) return;
 
-  if (indicePerguntaAtual >= listaDePerguntas.length) {
-    elementoApp.innerHTML = `<h1>Fim de jogo! Você fez ${pontuacao} pontos em um maximo de ${listaDePerguntas.length}.</h1>`;
+  if (currentIndexQuestion >= questionList.length) {
+    const elementoApp = document.querySelector('#app');
+    if (elementoApp) {
+      elementoApp.innerHTML = `
+        <div class="text-center p-10 bg-slate-800 rounded-xl">
+          <h1 class="text-3xl font-bold text-white">Quiz Ended! 🏆</h1>
+          <p class="text-xl text-slate-300 mt-4">Your Final Score: ${score}</p>
+          <button onclick="location.reload()" class="mt-6 bg-blue-500 px-6 py-2 rounded-lg text-white">Recomeçar</button>
+        </div>
+      `;
+    }
     return;
   }
 
-  const perguntaAtual = listaDePerguntas[indicePerguntaAtual];
+  const userCurrentAnswer = questionList[currentIndexQuestion];
 
-  elementoApp.innerHTML = `
+  appElement_.innerHTML = `
       <div class="quiz-container">
-        <p>Pontos: ${pontuacao} | Pergunta: ${indicePerguntaAtual + 1}/10</p>
-        <h2 id="question">${perguntaAtual.question}</h2>
+        <p>Score: ${score} | Question: ${currentIndexQuestion + 1}/10</p>
+        <h2 id="question">${userCurrentAnswer.question}</h2>
         <div class="options">
-          <button class="btn-choice" value='True'>Verdadeiro</button>
-          <button class="btn-choice" value='False'>Falso</button>
+          <button class="btn-choice" value='True'>True</button>
+          <button class="btn-choice" value='False'>False</button>
+          <button class="btn-next">Next</button
         </div>
       </div>
       `;
-  setupListeners(perguntaAtual.correct_answer);
+  setupListeners(userCurrentAnswer.correct_answer);
+
+
 }
 
 function setupListeners(correct_answer: string) {
-  const buttons = document.querySelectorAll('.btn-choice');
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.btn-choice');
+  const nextButton = document.querySelector<HTMLButtonElement>('.btn-next');
 
   buttons.forEach(button => {
-    button.addEventListener('click', (event) => {
-      const target = event.target as HTMLButtonElement;
-      const escolhaDoUsuario = target.value;
+    button.addEventListener('click', () => {
+      buttons.forEach(btn => btn.disabled = true);
+      nextButton?.classList.remove('hidden');
 
-      console.log("Você escolheu:", escolhaDoUsuario);
-
-
-      if(target.value === correct_answer) {
-        alert("Acertou!");
-        pontuacao++;
+      if (button.value === correct_answer) {
+        button.classList.add('bg-green-600');
+        score++;
       } else {
-        alert("Errou...")
+        button.classList.add('bg-red-600');
       }
-      indicePerguntaAtual++;
-      console.log(indicePerguntaAtual);
-      renderizarQuiz();
-    })
-  })
+    });
+  });
+  nextButton?.addEventListener('click', () => {
+    currentIndexQuestion++;
+    renderizarQuiz();
+  }, {once: true});
 }
 
 fetchQuestions();

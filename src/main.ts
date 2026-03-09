@@ -33,12 +33,11 @@ function renderizarQuiz() {
     const appElement_ = document.querySelector("#app");
     if (appElement_) {
       appElement_.innerHTML = `
-        <div class="text-center p-10 bg-slate-800 rounded-xl">
-          <h1 class="text-3xl font-bold text-white">Quiz Ended! 🏆</h1>
-          <p class="text-xl text-slate-300 mt-4">Your Final Score: ${score}</p>
-          <button onclick="location.reload()" class="mt-6 bg-blue-500 px-6 py-2 rounded-lg text-white">Recomeçar</button>
-        </div>
-      `;
+  <div class="text-center p-10 bg-slate-800 rounded-xl">
+    <h1 class="text-3xl font-bold text-white">Quiz Ended! 🏆</h1>
+    <span class="text-3xl font-bold text-white">Total Score: ${score*100}</span>
+  </div>
+`;
     }
     return;
   }
@@ -46,10 +45,11 @@ function renderizarQuiz() {
   const userCurrentAnswer = questionList[currentIndexQuestion];
 
   appElement_.innerHTML = `
-  <div class="min-h-screen bg-slate-100 flex items-center justify-center p-6 font-sans ga-[1rem">
-    <div class="max-w-4xl w-full bg-white rounded-[0.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/20">
+  <div class="min-h-screen bg-slate-100 flex items-center justify-center p-6 font-sans ga-[1rem]">
+    <div class="max-w-4xl w-full p-[2rem] bg-white rounded-[0.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/20">
       
       <div class="md:w-1/3 bg-slate-900 p-10 flex flex-col items-center justify-center text-center">
+
         <h3 class="text-white font-bold text-xl uppercase tracking-tighter">Animals Quiz</h3>
           <div class="flex justify-between  gap-[1rem] mb-8">
             <span class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
@@ -67,19 +67,29 @@ function renderizarQuiz() {
         </h2>
 
         <div class="grid grid-cols-2 gap-3 w-full max-w-xs mb-6">
-          <button class="btn-choice bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 border-b-4 border-blue-800 rounded-xl text-sm transition-all active:translate-y-1" value="True">
-            Verdadeiro
-            <span class="opacity-0 group-hover:opacity-100 transition-opacity text-indigo-500">→</span>
+          <button 
+            value="True"
+            class="btn-choice group bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4
+            border-b-4 border-blue-800 rounded-xl text-sm
+            transition-all duration-150
+            active:border-b-0 active:translate-y-1">
+            True
+            <span class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
           </button>
-          
-          <button class="btn-choice bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 border-b-4 border-blue-800 rounded-xl text-sm transition-all active:translate-y-1" value="False">
-            Falso
-            <span class="opacity-0 group-hover:opacity-100 transition-opacity text-indigo-500">→</span>
+
+          <button 
+            value="False"
+            class="btn-choice group bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4
+            border-b-4 border-blue-800 rounded-xl text-sm
+            transition-all duration-150
+            active:border-b-0 active:translate-y-1">
+            False
+            <span class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
           </button>
         </div>
 
         <button class="btn-next hidden w-full max-w-xs bg-slate-800 text-white py-2 rounded-xl text-sm shadow-lg font-bold">
-          Próxima Pergunta
+          Next
         </button>
       </div>
     </div>
@@ -95,16 +105,24 @@ function setupListeners(correct_answer: string) {
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
       buttons.forEach((btn) => (btn.disabled = true));
+
       nextButton?.classList.remove("hidden");
 
+      button.classList.remove(
+        "bg-blue-600",
+        "border-blue-800",
+        "hover:bg-blue-500",
+      );
+
       if (button.value === correct_answer) {
-        button.classList.add("bg-green-600");
+        button.classList.add("bg-green-600", "border-green-800");
         score++;
       } else {
-        button.classList.add("bg-red-600");
+        button.classList.add("bg-red-600", "border-red-800");
       }
     });
   });
+
   nextButton?.addEventListener(
     "click",
     () => {

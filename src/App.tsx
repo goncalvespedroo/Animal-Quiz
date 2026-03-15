@@ -1,8 +1,14 @@
-import  Home  from './pages/Home'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Quiz from "./pages/Quiz";
 
 export default function App() {
   return (
-    // O App agora é só o "porteiro" que entrega a página Home
-    <Home />
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/quiz" element={<Quiz />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }

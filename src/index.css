@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+/* Opcional: Aqui você pode definir cores personalizadas para o seu quiz */
+@theme {
+  --color-brand-blue: #2563eb;
+  --color-correct: #16a34a;
+  --color-wrong: #dc2626;
+}
+
+/* Configurações globais que valem para o site todo */
+body {
+  @apply bg-slate-900 font-sans antialiased;
+}

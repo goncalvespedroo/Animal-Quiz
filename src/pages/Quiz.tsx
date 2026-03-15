@@ -42,7 +42,7 @@ export default function Quiz() {
       <div className="max-w-xl w-full bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl flex flex-col gap-6">
         <div className="flex justify-between items-center border-b border-slate-800 pb-4">
           <span className="text-emerald-500 font-bold uppercase tracking-widest text-xs">
-            Questão {currentIndex + 1} / {questions.length}
+            Question {currentIndex + 1} / {questions.length}
           </span>
           <span className="text-slate-500 text-xs">Score: {score}</span>
         </div>

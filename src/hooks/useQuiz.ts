@@ -14,6 +14,9 @@ export function useQuiz() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+
+        if (questions.length > 0) return;
+
         const fetchQuestions = async () => {
             try {
                 const response = await fetch("https://opentdb.com/api.php?amount=10&category=27&type=boolean");
@@ -31,7 +34,7 @@ export function useQuiz() {
         };
 
         fetchQuestions();
-    }, []);
+    }, [questions]);
 
     return { questions, loading, error };
 }

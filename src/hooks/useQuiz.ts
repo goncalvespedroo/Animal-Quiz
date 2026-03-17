@@ -8,7 +8,6 @@ interface Question {
   difficulty: string;
 }
 export function useQuiz() {
-    // AQUI ESTÁ A MUDANÇA:
     const [questions, setQuestions] = useState<Question[]>([]); 
     
     const [loading, setLoading] = useState(true);
@@ -23,7 +22,6 @@ export function useQuiz() {
                 
                 const data = await response.json();
                 
-                // Agora o TS sabe que data.results deve encaixar em Question[]
                 setQuestions(data.results);
             } catch (err) {
                 setError(err instanceof Error ? err.message : "Erro desconhecido");
